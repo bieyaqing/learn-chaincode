@@ -19,9 +19,33 @@ package main
 import (
 	"errors"
 	"fmt"
+	"bytes"
+	"encoding/binary"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+
+// Keys
+const REFERENCE = "reference"
+const ACTOR = "actor"
+const USERID = "userId"
+const STAGE = "stage"
+const STATION = "station"
+const RESOURCE = "resource"
+const REMARK = "remark"
+const DATE = "date"
+const PARAMS = "params"
+
+// Booking
+type Booking struct {
+	reference string
+	actor string
+	userId string
+	stage string
+	station string
+	resource string
+	remark string
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -40,7 +64,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err := stub.PutState("hello_world", []byte(args[0]))
+	err := stub.PutState("BuzzVox_Block_Chain", []byte(args[0]))
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +105,6 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	var key, value string
 	var err error
 	fmt.Println("running write()")
-	fmt.Println("yaqing write 2.0")
 
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
@@ -90,6 +113,36 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	key = args[0] //rename for funsies
 	value = args[1]
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var reference, actor, userId, stage, station, resource, remark string
+	var booking Booking
+	var err error
+	fmt.Println("running writeBooking()")
+
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	}
+
+	reference = args[0] //rename for funsies
+	actor = args[1]
+	userId = args[2]
+	stage = args[3]
+	station = args[4]
+	resource = args[5]
+	remark = args[6]
+
+	booking = Booking{reference, actor, userId, stage, station, resource, remark}
+
+	var bin_buf bytes.Buffer
+    binary.Write(&bin_buf, binary.BigEndian, booking)
+
+	err = stub.PutState(reference, bin_buf.Bytes()) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
