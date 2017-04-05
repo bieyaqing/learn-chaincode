@@ -48,18 +48,13 @@ func (t *SimpleChaincode) readBooking(stub shim.ChaincodeStubInterface, args []s
 		return nil, errors.New(jsonResp)
 	}
 
-	fmt.Println("=======hello=======")
 	if len(valAsbytes) == 0 {
 		jsonResp = "{\"Error\":\"Failed to get state for " + reference + "\"}"
 		return nil, errors.New(jsonResp)
 	}
-	fmt.Println(valAsbytes)
 	json.Unmarshal(valAsbytes, &booking)
-	fmt.Println(booking)
 	bookingJson, _ := json.Marshal(booking)
-	fmt.Println(bookingJson)
-	fmt.Println("=======world=======")
-
+	return []byte(`{"key": "value"}`), nil
 	return bookingJson, nil
 }
 
