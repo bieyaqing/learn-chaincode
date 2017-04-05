@@ -19,9 +19,9 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}
 
-	key = args[0] //rename for funsies
+	key = args[0]
 	value = args[1]
-	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	err = stub.PutState(key, []byte(value))
 	if err != nil {
 		return nil, err
 	}
@@ -59,18 +59,6 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	}
 
 	if len(valAsbytes) == 0 {
-		// bookingStr := `{
-		// 	"docType": "booking",
-		// 	"reference": "` + reference + `",
-		// 	"actor": "` + actor + `",
-		// 	"userId": "` + userId + `",
-		// 	"stage": ` + strconv.Itoa(stage) + `,
-		// 	"station": "` + station + `",
-		// 	"resType": "` + resType + `",
-		// 	"resource": "` + resource + `",
-		// 	"remark": "` + remark + `",
-		// 	"count": ` + strconv.Itoa(0) + `
-		// }`
 		booking = Booking{"booking", reference, actor, userId, stage, station, resType, resource, remark, 0}
 		bookingJson, _ := json.Marshal(booking)
 
@@ -80,15 +68,6 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		}
 		t := time.Now()
 		actionId := `` + reference + `_` + strconv.Itoa(0) + ``
-		// actionStr := `{
-		// 	"docType": "action",
-		// 	"actionId": "` + actionId + `",
-		// 	"actor": "` + actor + `",
-		// 	"actionName": "create",
-		// 	"stage": ` + strconv.Itoa(stage) + `,
-		// 	"remark": "` + remark + `",
-		// 	"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
-		// }`
 		action = Action{"action", actionId, actor, "create", stage, remark, t.UnixNano()}
 		actionJson, _ := json.Marshal(action)
 		err = stub.PutState(actionId, actionJson)
@@ -109,15 +88,6 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		}
 		t := time.Now()
 		actionId := `` + reference + `_` + strconv.Itoa(booking.Count) + ``
-		// actionStr := `{
-		// 	"docType": "action",
-		// 	"actionId": "` + actionId + `",
-		// 	"actor": "` + actor + `",
-		// 	"actionName": "update",
-		// 	"stage": ` + strconv.Itoa(stage) + `,
-		// 	"remark": "` + remark + `",
-		// 	"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
-		// }`
 		action = Action{"action", actionId, actor, "update", stage, remark, t.UnixNano()}
 		actionJson, _ := json.Marshal(action)
 		err = stub.PutState(actionId, actionJson)
