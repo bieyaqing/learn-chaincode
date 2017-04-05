@@ -1,11 +1,9 @@
 package main
 
 import (
-	// "encoding/json"
 	"fmt"
 	"errors"
 	"strconv"
-	// "strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )

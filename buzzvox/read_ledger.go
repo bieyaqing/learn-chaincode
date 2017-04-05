@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"errors"
-	// "strconv"
-	// "strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -50,13 +48,13 @@ func (t *SimpleChaincode) readBooking(stub shim.ChaincodeStubInterface, args []s
 		return nil, errors.New(jsonResp)
 	}
 
-	fmt.Println("HELLO WORLD =====================")
-	json.Unmarshal(valAsbytes, &booking)
+	fmt.Println("=======hello=======")
 	fmt.Println(valAsbytes)
+	json.Unmarshal(valAsbytes, &booking)
 	fmt.Println(booking)
 	bookingJson, _ := json.Marshal(booking)
 	fmt.Println(bookingJson)
-	fmt.Println("HELLO WORLD =====================")
+	fmt.Println("=======world=======")
 
 	return bookingJson, nil
 }
