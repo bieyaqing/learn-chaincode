@@ -43,6 +43,7 @@ type Booking struct {
 	userId string
 	stage string
 	station string
+	resType string
 	resource string
 	remark string
 }
@@ -120,7 +121,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 }
 
 func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var reference, actor, userId, stage, station, resource, remark string
+	var reference, actor, userId, stage, station, resType, resource, remark string
 	var booking Booking
 	var err error
 	fmt.Println("running writeBooking()")
@@ -134,10 +135,11 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	userId = args[2]
 	stage = args[3]
 	station = args[4]
-	resource = args[5]
-	remark = args[6]
+	resType = args[5]
+	resource = args[6]
+	remark = args[7]
 
-	booking = Booking{reference, actor, userId, stage, station, resource, remark}
+	booking = Booking{reference, actor, userId, stage, station, resType, resource, remark}
 
 	var bin_buf bytes.Buffer
     binary.Write(&bin_buf, binary.BigEndian, booking)
