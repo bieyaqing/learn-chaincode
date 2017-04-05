@@ -58,7 +58,7 @@ func (t *SimpleChaincode) readBooking(stub shim.ChaincodeStubInterface, args []s
 	fmt.Println(bookingJson)
 	fmt.Println("HELLO WORLD =====================")
 
-	return valAsbytes, nil
+	return bookingJson, nil
 }
 
 
