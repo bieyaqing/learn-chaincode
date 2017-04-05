@@ -21,7 +21,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	key = args[0]
 	valAsbytes, err := stub.GetState(key)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp = `{"Error":"Failed to get state for `+key+`"}`
 		return nil, errors.New(jsonResp)
 	}
 
@@ -44,12 +44,12 @@ func (t *SimpleChaincode) readBooking(stub shim.ChaincodeStubInterface, args []s
 
 	valAsbytes, err := stub.GetState(reference)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + reference + "\"}"
+		jsonResp = `{"Error":"Failed to get state for `+reference+`"}`
 		return nil, errors.New(jsonResp)
 	}
 
 	if len(valAsbytes) == 0 {
-		jsonResp = "{\"Error\":\"Failed to get state for " + reference + "\"}"
+		jsonResp = `{"Error":"Booking reference `+reference+` not exist"}`
 		return nil, errors.New(jsonResp)
 	}
 	json.Unmarshal(valAsbytes, &booking)

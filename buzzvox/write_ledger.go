@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"errors"
 	"strconv"
+	"encoding/json"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -28,6 +29,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var err error
+	var jsonResp string
 	fmt.Println("running writeBooking()")
 
 	if len(args) != 8 {
@@ -46,23 +48,42 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	resource := args[6]
 	remark := args[7]
 
-	str := `{
-		"docType": "booking",
-		"reference": "` + reference + `",
-		"actor": "` + actor + `",
-		"userId": "` + userId + `",
-		"stage": ` + strconv.Itoa(stage) + `,
-		"station": "` + station + `",
-		"resType": "` + resType + `",
-		"resource": "` + resource + `",
-		"remark": "` + remark + `"
-	}`
-
-	err = stub.PutState(reference, []byte(str))
+	// check booking
+	valAsbytes, err := stub.GetState(reference)
 	if err != nil {
-		return nil, err
+		jsonResp = `{"Error":"Failed to get state for `+reference+`"}`
+		return nil, errors.New(jsonResp)
 	}
-	return nil, nil
+
+	if len(valAsbytes) == 0 {
+		str := `{
+			"docType": "booking",
+			"reference": "` + reference + `",
+			"actor": "` + actor + `",
+			"userId": "` + userId + `",
+			"stage": ` + strconv.Itoa(stage) + `,
+			"station": "` + station + `",
+			"resType": "` + resType + `",
+			"resource": "` + resource + `",
+			"remark": "` + remark + `",
+			"count": ` + strconv.Itoa(0) + `
+		}`
+		err = stub.PutState(reference, []byte(str))
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	} else {
+		var booking Booking
+		json.Unmarshal(valAsbytes, &booking)
+		booking.Count = booking.Count + 1
+		bookingJson, _ := json.Marshal(booking)
+		err = stub.PutState(reference, bookingJson)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
 }
 
 

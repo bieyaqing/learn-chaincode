@@ -20,6 +20,7 @@ type Booking struct {
 	ResType string `json:resType`
 	Resource string `json:resource`
 	Remark string `json:remark`
+	Count int `json:count`
 }
 
 type Action struct {
