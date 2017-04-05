@@ -29,6 +29,7 @@ type Action struct {
 	ActionId string `json:"actionId"`
 	ActionName string `json:"actionName"`
 	Stage int `json:stage`
+	Remark string `json:remark`
 	TimeStamp int64 `json:"timeStamp"`
 }
 

@@ -81,6 +81,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 			"actor": "` + actor + `",
 			"actionName": "create",
 			"stage": ` + strconv.Itoa(stage) + `,
+			"remark": "` + remark + `",
 			"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
 		}`
 		err = stub.PutState(actionId, []byte(actionStr))
@@ -91,6 +92,9 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	} else {
 		var booking Booking
 		json.Unmarshal(valAsbytes, &booking)
+		booking.Actor = actor
+		booking.Stage = stage
+		booking.Remark = remark
 		booking.Count = booking.Count + 1
 		bookingJson, _ := json.Marshal(booking)
 		err = stub.PutState(reference, bookingJson)
@@ -105,6 +109,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 			"actor": "` + actor + `",
 			"actionName": "update",
 			"stage": ` + strconv.Itoa(stage) + `,
+			"remark": "` + remark + `",
 			"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
 		}`
 		err = stub.PutState(actionId, []byte(actionStr))
