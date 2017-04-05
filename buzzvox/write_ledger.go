@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"errors"
 	"strconv"
+	"time"
 	"encoding/json"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -56,7 +57,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	}
 
 	if len(valAsbytes) == 0 {
-		str := `{
+		bookingStr := `{
 			"docType": "booking",
 			"reference": "` + reference + `",
 			"actor": "` + actor + `",
@@ -68,11 +69,25 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 			"remark": "` + remark + `",
 			"count": ` + strconv.Itoa(0) + `
 		}`
-		err = stub.PutState(reference, []byte(str))
+		err = stub.PutState(reference, []byte(bookingStr))
 		if err != nil {
 			return nil, err
 		}
-		return nil, nil
+		t := time.Now()
+		actionId := `` + reference + `_` + strconv.Itoa(0) + ``
+		actionStr := `{
+			"docType": "action",
+			"actionId": "` + actionId + `",
+			"actor": "` + actor + `",
+			"actionName": "create",
+			"stage": ` + strconv.Itoa(stage) + `,
+			"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
+		}`
+		err = stub.PutState(actionId, []byte(actionStr))
+		if err != nil {
+			return nil, err
+		}
+		return []byte(bookingStr), nil
 	} else {
 		var booking Booking
 		json.Unmarshal(valAsbytes, &booking)
@@ -82,7 +97,21 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		if err != nil {
 			return nil, err
 		}
-		return nil, nil
+		t := time.Now()
+		actionId := `` + reference + `_` + strconv.Itoa(booking.Count) + ``
+		actionStr := `{
+			"docType": "action",
+			"actionId": "` + actionId + `",
+			"actor": "` + actor + `",
+			"actionName": "update",
+			"stage": ` + strconv.Itoa(stage) + `,
+			"timeStamp": ` + strconv.FormatInt(t.UnixNano(), 10) + `
+		}`
+		err = stub.PutState(actionId, []byte(actionStr))
+		if err != nil {
+			return nil, err
+		}
+		return bookingJson, nil
 	}
 }
 

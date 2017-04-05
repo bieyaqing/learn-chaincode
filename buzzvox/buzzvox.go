@@ -25,9 +25,11 @@ type Booking struct {
 
 type Action struct {
 	ObjectType string `json:"docType"`
-	Id int `json:"id"`
-	Action string `json:"action"`
-	TimeStamp int `json:"timeStamp"`
+	Actor string `json:"actor"`
+	ActionId string `json:"actionId"`
+	ActionName string `json:"actionName"`
+	Stage int `json:stage`
+	TimeStamp int64 `json:"timeStamp"`
 }
 
 func main() {
