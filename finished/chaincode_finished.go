@@ -143,10 +143,13 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 
 	booking = Booking{reference, actor, userId, stage, station, resType, resource, remark}
 
-	var bin_buf bytes.Buffer
-    binary.Write(&bin_buf, binary.BigEndian, booking)
+	buf := &bytes.Buffer{}
+	strErr := binary.Write(buf, binary.LittleEndian, booking)
+	fmt.Printf("%v %x", strErr, buf.Bytes())
 
-	err = stub.PutState(reference, bin_buf.Bytes()) //write the variable into the chaincode state
+    // binary.Write(&bin_buf, binary.BigEndian, booking)
+
+	err = stub.PutState(reference, buf.Bytes()) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
