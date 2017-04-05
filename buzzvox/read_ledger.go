@@ -86,7 +86,7 @@ func (t *SimpleChaincode) readBookingActions(stub shim.ChaincodeStubInterface, a
 
 	count := booking.Count
 
-	for i := 0; i < count; i++ {
+	for i := 0; i <= count; i++ {
 		var action Action
 		actionId := `` + reference + `_` + strconv.Itoa(i) + ``
 		vAsBs, err := stub.GetState(actionId)
