@@ -54,7 +54,6 @@ func (t *SimpleChaincode) readBooking(stub shim.ChaincodeStubInterface, args []s
 	}
 	json.Unmarshal(valAsbytes, &booking)
 	bookingJson, _ := json.Marshal(booking)
-	return []byte(`{"key": "value"}`), nil
 	return bookingJson, nil
 }
 

@@ -22,6 +22,13 @@ type Booking struct {
 	Remark string `json:remark`
 }
 
+type Action struct {
+	ObjectType string `json:"docType"`
+	Id int `json:"id"`
+	Action string `json:"action"`
+	TimeStamp int `json:"timeStamp"`
+}
+
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
