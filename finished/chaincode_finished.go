@@ -19,34 +19,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"bytes"
-	"encoding/binary"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
-
-// Keys
-const REFERENCE = "reference"
-const ACTOR = "actor"
-const USERID = "userId"
-const STAGE = "stage"
-const STATION = "station"
-const RESOURCE = "resource"
-const REMARK = "remark"
-const DATE = "date"
-const PARAMS = "params"
-
-// Booking
-type Booking struct {
-	reference string
-	actor string
-	userId string
-	stage string
-	station string
-	resType string
-	resource string
-	remark string
-}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -82,8 +57,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	} else if function == "write_booking" {
-		return t.writeBooking(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -116,40 +89,6 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	key = args[0] //rename for funsies
 	value = args[1]
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
-}
-
-func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var reference, actor, userId, stage, station, resType, resource, remark string
-	var booking Booking
-	var err error
-	fmt.Println("running writeBooking()")
-
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
-	}
-
-	reference = args[0] //rename for funsies
-	actor = args[1]
-	userId = args[2]
-	stage = args[3]
-	station = args[4]
-	resType = args[5]
-	resource = args[6]
-	remark = args[7]
-
-	booking = Booking{reference, actor, userId, stage, station, resType, resource, remark}
-
-	buf := &bytes.Buffer{}
-	strErr := binary.Write(buf, binary.LittleEndian, booking)
-	fmt.Printf("%v %x", strErr, buf.Bytes())
-
-    // binary.Write(&bin_buf, binary.BigEndian, booking)
-
-	err = stub.PutState(reference, buf.Bytes()) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
