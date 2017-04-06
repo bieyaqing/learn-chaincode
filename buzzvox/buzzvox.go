@@ -11,26 +11,26 @@ type SimpleChaincode struct {
 }
 
 type Booking struct {
-	ObjectType string `json:"docType"`
-	Reference string `json:"reference"`
-	Actor string `json:"actor"`
-	UserId string `json:"userId"`
-	Stage int `json:stage`
-	Station string `json:station`
-	ResType string `json:resType`
-	Resource string `json:resource`
-	Remark string `json:remark`
-	Count int `json:count`
+	objectType string `json:"docType"`
+	reference string `json:"reference"`
+	actor string `json:"actor"`
+	userId string `json:"userId"`
+	stage int `json:stage`
+	station string `json:station`
+	resType string `json:resType`
+	resource string `json:resource`
+	remark string `json:remark`
+	count int `json:count`
 }
 
 type Action struct {
-	ObjectType string `json:"docType"`
-	ActionId string `json:"actionId"`
-	Actor string `json:"actor"`
-	ActionName string `json:"actionName"`
-	Stage int `json:stage`
-	Remark string `json:remark`
-	TimeStamp int64 `json:"timeStamp"`
+	objectType string `json:"docType"`
+	actionId string `json:"actionId"`
+	actor string `json:"actor"`
+	actionName string `json:"actionName"`
+	stage int `json:stage`
+	remark string `json:remark`
+	timeStamp int64 `json:"timeStamp"`
 }
 
 func main() {

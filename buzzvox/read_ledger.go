@@ -84,7 +84,7 @@ func (t *SimpleChaincode) readBookingActions(stub shim.ChaincodeStubInterface, a
 	}
 	json.Unmarshal(valAsbytes, &booking)
 
-	count := booking.Count
+	count := booking.count
 
 	for i := 0; i <= count; i++ {
 		var action Action

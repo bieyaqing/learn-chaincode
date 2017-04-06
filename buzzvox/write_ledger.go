@@ -77,17 +77,17 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		return nil, nil
 	} else {
 		json.Unmarshal(valAsbytes, &booking)
-		booking.Actor = actor
-		booking.Stage = stage
-		booking.Remark = remark
-		booking.Count = booking.Count + 1
+		booking.actor = actor
+		booking.stage = stage
+		booking.remark = remark
+		booking.count = booking.count + 1
 		bookingJson, _ := json.Marshal(booking)
 		err = stub.PutState(reference, bookingJson)
 		if err != nil {
 			return nil, err
 		}
 		t := time.Now()
-		actionId := `` + reference + `_` + strconv.Itoa(booking.Count) + ``
+		actionId := `` + reference + `_` + strconv.Itoa(booking.count) + ``
 		action = Action{"action", actionId, actor, "update", stage, remark, t.UnixNano()}
 		actionJson, _ := json.Marshal(action)
 		err = stub.PutState(actionId, actionJson)
