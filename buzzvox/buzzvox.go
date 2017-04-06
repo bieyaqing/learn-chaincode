@@ -25,8 +25,8 @@ type Booking struct {
 
 type Action struct {
 	ObjectType string `json:"docType"`
-	Actor string `json:"actor"`
 	ActionId string `json:"actionId"`
+	Actor string `json:"actor"`
 	ActionName string `json:"actionName"`
 	Stage int `json:stage`
 	Remark string `json:remark`
