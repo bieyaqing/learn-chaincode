@@ -78,6 +78,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	} else {
 		json.Unmarshal(valAsbytes, &booking)
 		booking.Actor = actor
+		booking.UserId = userId
 		booking.Stage = stage
 		booking.Remark = remark
 		booking.Count = booking.Count + 1
