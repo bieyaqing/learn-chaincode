@@ -27,6 +27,7 @@ type Action struct {
 	ObjectType string `json:"DocType"`
 	ActionId string `json:"ActionId"`
 	Actor string `json:"Actor"`
+	UserId string `json:"UserId"`
 	ActionName string `json:"ActionName"`
 	Stage int `json:Stage`
 	Remark string `json:Remark`

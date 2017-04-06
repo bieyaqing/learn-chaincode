@@ -68,7 +68,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		}
 		t := time.Now()
 		actionId := `` + reference + `_` + strconv.Itoa(0) + ``
-		action = Action{"action", actionId, actor, "create", stage, remark, t.UnixNano()}
+		action = Action{"action", actionId, actor, userId, "create", stage, remark, t.UnixNano()}
 		actionJson, _ := json.Marshal(action)
 		err = stub.PutState(actionId, actionJson)
 		if err != nil {
@@ -88,7 +88,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		}
 		t := time.Now()
 		actionId := `` + reference + `_` + strconv.Itoa(booking.Count) + ``
-		action = Action{"action", actionId, actor, "update", stage, remark, t.UnixNano()}
+		action = Action{"action", actionId, actor, userId, "update", stage, remark, t.UnixNano()}
 		actionJson, _ := json.Marshal(action)
 		err = stub.PutState(actionId, actionJson)
 		if err != nil {
