@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
-	"encoding/json"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -54,7 +54,7 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 	// check booking
 	valAsbytes, err := stub.GetState(reference)
 	if err != nil {
-		jsonResp = `{"Error":"Failed to get state for `+reference+`"}`
+		jsonResp = `{"Error":"Failed to get state for ` + reference + `"}`
 		return nil, errors.New(jsonResp)
 	}
 
@@ -98,6 +98,3 @@ func (t *SimpleChaincode) writeBooking(stub shim.ChaincodeStubInterface, args []
 		return nil, nil
 	}
 }
-
-
-

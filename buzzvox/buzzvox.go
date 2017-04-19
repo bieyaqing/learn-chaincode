@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -12,26 +12,26 @@ type SimpleChaincode struct {
 
 type Booking struct {
 	ObjectType string `json:"DocType"`
-	Reference string `json:"Reference"`
-	Actor string `json:"Actor"`
-	UserId string `json:"UserId"`
-	Stage int `json:Stage`
-	Station string `json:Station`
-	ResType string `json:ResType`
-	Resource string `json:Resource`
-	Remark string `json:Remark`
-	Count int `json:Count`
+	Reference  string `json:"Reference"`
+	Actor      string `json:"Actor"`
+	UserId     string `json:"UserId"`
+	Stage      int    `json:Stage`
+	Station    string `json:Station`
+	ResType    string `json:ResType`
+	Resource   string `json:Resource`
+	Remark     string `json:Remark`
+	Count      int    `json:Count`
 }
 
 type Action struct {
 	ObjectType string `json:"DocType"`
-	ActionId string `json:"ActionId"`
-	Actor string `json:"Actor"`
-	UserId string `json:"UserId"`
+	ActionId   string `json:"ActionId"`
+	Actor      string `json:"Actor"`
+	UserId     string `json:"UserId"`
 	ActionName string `json:"ActionName"`
-	Stage int `json:Stage`
-	Remark string `json:Remark`
-	TimeStamp int64 `json:"TimeStamp"`
+	Stage      int    `json:Stage`
+	Remark     string `json:Remark`
+	TimeStamp  int64  `json:"TimeStamp"`
 }
 
 func main() {
@@ -83,5 +83,3 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
-
-
